@@ -63,11 +63,11 @@ The cluster needs `--enable-multi-networking` for multiple NICs per node and `--
 ```bash
 gcloud container clusters create $CLUSTER_NAME \
   --zone $ZONE \
-  --num-nodes 2 \
+  --num-nodes 1 \
   --machine-type n2-standard-8 \
   --disk-size=50 \
   --disk-type=pd-standard \
-  --network-performance-config total-egress-bandwidth-tier=TIER_1 \
+  --network-performance-configs total-egress-bandwidth-tier=TIER_1 \
   --enable-multi-networking \
   --enable-dataplane-v2 \
   --release-channel rapid
