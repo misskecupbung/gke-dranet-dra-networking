@@ -36,6 +36,17 @@ export CLUSTER_NAME=lab-dranet
 export ZONE=us-central1-a
 ```
 
+## Enable required APIs
+
+On a new project, these APIs are not enabled by default. Run this before creating any resources.
+
+```bash
+gcloud services enable \
+  container.googleapis.com \
+  compute.googleapis.com \
+  --project $PROJECT_ID
+```
+
 ## Clone the repo
 
 ```bash
