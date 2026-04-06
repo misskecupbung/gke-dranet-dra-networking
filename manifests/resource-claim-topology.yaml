@@ -1,0 +1,30 @@
+# ResourceClaim with a PCIe topology constraint.
+#
+# The CEL expression in the selector constrains which device is chosen.
+# "device.attributes['google.com/dranet'].pcie_root_complex == '0'"
+# means: allocate a NIC that is on PCIe root complex 0.
+#
+# For GPU training workloads, you would use this together with a GPU resource
+# claim and set both to the same PCIe root complex, ensuring the NIC and GPU
+# are on the same domain. This avoids PCIe bridge traversal for RDMA traffic.
+#
+# Note: The exact attribute names depend on the DRANET driver version.
+# Check: kubectl get resourceslice -o yaml | grep -A5 attributes
+
+apiVersion: resource.k8s.io/v1alpha3
+kind: ResourceClaim
+metadata:
+  name: topology-nic-claim
+  namespace: default
+spec:
+  devices:
+    requests:
+    - name: nic
+      deviceClassName: google-dranet-nic
+      selectors:
+      - cel:
+          # This selects a NIC on NUMA node 0.
+          # Adjust the attribute path based on your cluster's ResourceSlice output.
+          expression: >
+            "numa_node" in device.attributes["google.com/dranet"] &&
+            device.attributes["google.com/dranet"]["numa_node"].int() == 0

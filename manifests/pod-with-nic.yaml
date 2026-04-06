@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-nic
+  labels:
+    app: pod-with-nic
+spec:
+  # Reference the ResourceClaim by name.
+  # The claim must exist before applying this pod.
+  resourceClaims:
+  - name: nic
+    resourceClaimName: basic-nic-claim
+  containers:
+  - name: app
+    image: ubuntu:22.04
+    command: ["sleep", "3600"]
+    resources:
+      requests:
+        cpu: "200m"
+        memory: "256Mi"
+      # Claim the NIC resource in this container
+      claims:
+      - name: nic

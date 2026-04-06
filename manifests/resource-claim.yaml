@@ -1,0 +1,20 @@
+# Basic ResourceClaim for a DRANET-managed NIC.
+#
+# A ResourceClaim is like a PersistentVolumeClaim but for hardware devices.
+# It is not bound until a pod that references it is scheduled.
+# Once bound, it shows which physical device was allocated.
+#
+# The deviceClassName "google-dranet-nic" is created by the DRANET DaemonSet
+# when it starts up on GKE nodes. Check with: kubectl get deviceclass
+
+apiVersion: resource.k8s.io/v1alpha3
+kind: ResourceClaim
+metadata:
+  name: basic-nic-claim
+  namespace: default
+spec:
+  devices:
+    requests:
+    - name: nic
+      deviceClassName: google-dranet-nic
+      # No constraints — allocate any available NIC managed by DRANET

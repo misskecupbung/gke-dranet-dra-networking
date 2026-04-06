@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-topology-nic
+  labels:
+    app: pod-with-topology-nic
+spec:
+  resourceClaims:
+  - name: topology-nic
+    resourceClaimName: topology-nic-claim
+  containers:
+  - name: app
+    image: ubuntu:22.04
+    command: ["sleep", "3600"]
+    resources:
+      requests:
+        cpu: "200m"
+        memory: "256Mi"
+      claims:
+      - name: topology-nic
